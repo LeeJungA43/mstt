@@ -94,7 +94,7 @@ requests==2.18.4
 resampy==0.2.0
 rsa==3.4.2
 scikit-learn==0.19.0
-scipy==0.19.1
+#scipy==0.19.1
 simplegeneric==0.8.1
 six==1.11.0
 tenacity==4.4.0

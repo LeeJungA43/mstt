@@ -127,7 +127,7 @@ def train(log_dir, config):
     commit = get_git_commit() if config.git else 'None'
     checkpoint_path = os.path.join(log_dir, 'model.ckpt')
 
-    log(' [*] git recv-parse HEAD:\n%s' % get_git_revision_hash())
+    #log(' [*] git recv-parse HEAD:\n%s' % get_git_revision_hash())
     log('='*50)
     #log(' [*] dit diff:\n%s' % get_git_diff())
     log('='*50)

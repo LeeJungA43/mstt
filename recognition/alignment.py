@@ -3,6 +3,7 @@ import os
 import string
 import argparse
 import operator
+import time
 from functools import partial
 from difflib import SequenceMatcher
 
@@ -103,38 +104,42 @@ def align_text_fn(
     news_path = os.path.splitext(news_path)[0] + ".txt"
 
     strip_fn = lambda line: line.strip().replace('"', '').replace("'", "")
-    candidates = [strip_fn(line) for line in open(news_path, encoding='cp949').readlines()]
+    candidates = [strip_fn(line) for line in open(news_path, encoding='utf-8').readlines()]
 
     scores = { candidate: similarity(candidate, recognition_text) \
                     for candidate in candidates}
     sorted_scores = sorted(scores.items(), key=operator.itemgetter(1))[::-1]
 
-    first, second = sorted_scores[0], sorted_scores[1]
+    try :
+        first, second = sorted_scores[0], sorted_scores[1] #오류 구간
 
-    if first[1] > second[1] and first[1] >= score_threshold:
-        found_text, score = first
-        aligned_text = search_optimal(found_text, recognition_text)
+        if first[1] > second[1] and first[1] >= score_threshold:
+            found_text, score = first
+            aligned_text = search_optimal(found_text, recognition_text)
 
-        if debug:
-            print("   ", audio_path)
-            print("   ", recognition_text)
-            print("=> ", found_text)
-            print("==>", aligned_text)
-            print("="*30)
+            if debug:
+                print("   ", audio_path)
+                print("   ", recognition_text)
+                print("=> ", found_text)
+                print("==>", aligned_text)
+                print("="*30)
 
-        if aligned_text is not None:
-            result = { audio_path: add_punctuation(aligned_text) }
-        elif abs(len(text_to_sequence(found_text)) - len(text_to_sequence(recognition_text))) > 10:
-            result = {}
+            if aligned_text is not None:
+                result = { audio_path: add_punctuation(aligned_text) }
+            elif abs(len(text_to_sequence(found_text)) - len(text_to_sequence(recognition_text))) > 10:
+                result = {}
+            else:
+                result = { audio_path: [add_punctuation(found_text), recognition_text] }
         else:
-            result = { audio_path: [add_punctuation(found_text), recognition_text] }
-    else:
-        result = {}
+            result = {}
 
-    if len(result) == 0:
-        result = { audio_path: [recognition_text] }
+        if len(result) == 0:
+            result = { audio_path: [recognition_text] }
 
-    return result
+        return result
+
+    except:
+        pass
 
 def align_text_batch(config):
     align_text = partial(align_text_fn,
@@ -163,7 +168,7 @@ if __name__ == '__main__':
     parser.add_argument('--recognition_path', required=True)
     parser.add_argument('--alignment_filename', default="alignment.json")
     parser.add_argument('--score_threshold', default=0.4, type=float)
-    parser.add_argument('--recognition_encoding', default='949')
+    parser.add_argument('--recognition_encoding', default='utf-8')
     config, unparsed = parser.parse_known_args()
 
     results = align_text_batch(config)
