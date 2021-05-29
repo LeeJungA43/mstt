@@ -1,5 +1,7 @@
 # Multi-Speaker Tacotron in TensorFlow
 
+개인 공부: https://lee-jung-ah.tistory.com/1
+
 TensorFlow implementation of:
 
 - [Deep Voice 2: Multi-Speaker Neural Text-to-Speech](https://arxiv.org/abs/1705.08947)
