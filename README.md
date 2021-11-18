@@ -2,6 +2,8 @@
 
 개인 공부: https://lee-jung-ah.tistory.com/1
 
+한달간의 전처리 후 반복해서 재학습을 진행했으나 목소리의 명확도가 개선되지 않음. 당장 프로젝트에선 사용 불가능하다고 판단, 프로젝트 종료 후 다시 시도해 볼 것.
+
 TensorFlow implementation of:
 
 - [Deep Voice 2: Multi-Speaker Neural Text-to-Speech](https://arxiv.org/abs/1705.08947)
